@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+<title>Extrinsic Noise in Gene Expression</title>
+
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/purebasic.min.css">
+        <link href="../css/extra.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <!-- Expander button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="..">Extrinsic Noise</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li >
+                                <a href="..">Home</a>
+                            </li>
+                            <li class="active">
+                                <a href="./">Introduction</a>
+                            </li>
+                            <li >
+                                <a href="../Methods/">Methods</a>
+                            </li>
+                            <li >
+                                <a href="../MCMC/">MCMC</a>
+                            </li>
+                            <li >
+                                <a href="../ModelSele/">Model Selection</a>
+                            </li>
+                            <li >
+                                <a href="../Conclusion/">Discussion</a>
+                            </li>
+                            <li >
+                                <a href="../About/">About</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                            <li >
+                                <a rel="next" href="..">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li >
+                                <a rel="prev" href="../Methods/">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+  <!-- <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#introduction">Introduction</a></li>
+            <li><a href="#noise-in-transcription">Noise in Transcription</a></li>
+            <li><a href="#bayesian-approach-in-modelling">Bayesian Approach in Modelling</a></li>
+            <li><a href="#the-project">The Project</a></li>
+    </ul>
+</div></div> -->
+  <div class="col-md-12" role="main">
+
+<h1 id="introduction">Introduction</h1>
+<hr>
+
+<h2 id="noise-in-transcription">Noise in Transcription</h2>
+<p>Transcription, or the production of mRNA molecules from a single gene is intrinsically a stochastic process <a href="../About">(1)</a>. This intrinsic noise is usually not Poissonian, namely having a constant probability of mRNA production per unit time, but instead appears to happen in pulses <a href="../About">(2)</a>. This characteristic behaviour is generally recognised as transcription bursting, and has been extensively studied with mathematical modelling <a href="../About">(3)</a>. One of the most acknowledged model by far is the Telegraph model (Figure 1), in which the gene toggles between an on state and an off state, and the on state is able to give Poissonian production of mRNA <a href="../About">(3)</a>. This stochastic model can account for the bursty behaviour of transcription with geometrically distributed burst size and exponentially distributed burst arrival time <a href="../About">(4)</a>. </p>
+<hr>
+
+<p><img id="Fig1" src="../figure/Figure1.png"></p>
+<div class="legend">
+    Figure 1. The telegraph model for transcription. I: inactive state of gene, A: active state of gene &lambda;: rate for switching on, &nu;: rate for switching off, K: rate for producing mRNA when active, &delta;: rate for degradation. Small panel: the lognormal distribution from which K is drawn for compound model. &sigma;: standard deviation of K in compound model normalised by mean of K.
+</div>
+
+<hr>
+
+<p>Besides the inherently stochastic transcriptional machinery, the rate parameters of gene state switching or mRNA generation (parameters in Figure 1) can also vary from cell to cell, which is regarded as the extrinsic noise. This extrinsic noise can result from heterogeneity in gene copy number or RNA polymerase copy number <a href="../About">(5)</a> (among many other factors), but has been said to not provide a significant contribution to heterogeneity <a href="../About">(6)</a>. However some genes tend to produce mRNA with a more heavy-tailed distribution <a href="../About">(7)</a>, i.e. a distribution whose tail decreases more slowly than an exponential distribution, and for which a power law distribution is an example. It has been recently demonstrated that this heavy-tailedness cannot be explained solely by the intrinsically noisy telegraph model, but compounding the model by drawing the active transcription rate K from a log-normal distribution (Figure 1, small panel) is capable of rendering the resulting mRNA distribution heavy-tailed <a href="../About">(8)</a>. This extrinsic noise that may exist in certain genes can have functional implications, either as an additional boost in phenotypic diversity under stressful condition such as during bacteria competence <a href="../About">(4)</a>, or as an indication of the robustness of the downstream pathways even in the presence of extra noise. Therefore interest arises in finding out whether some genes can be explained by the compound model with extrinsic noise. </p>
+<p><br></p>
+<h2 id="bayesian-approach-in-modelling">Bayesian Approach in Modelling</h2>
+<p>With the increase in computational power in the recent decade, Bayesian approaches for statistical inference have been proven to be successful in the field of systems biology <a href="../About">(9)</a>. Bayes theorem allows the straightforward incorporation of previous knowledge into the model fitting by using prior distributions, and Monte Carlo sampling can give direct access to the (posterior) probability distribution of the model parameters. 
+<a href="https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo" data-toggle="tooltip" title="Markov Chain Monte Carlo">MCMC</a> is an approach for sampling from the posterior distribution via taking a random walk (or a Markov Chain) in the parameter space, with the probability of accepting the step determined by both the prior and the likelihood before and after the step <a href="../About">(10)</a>. The posterior distribution of the parameters can then be used for model comparison.</p>
+<p><br></p>
+<h2 id="the-project">The Project</h2>
+<p>This project aims at using the MCMC method to fit the two alternative models: the intrinsically stochastic telegraph model and the compound model with extrinsic noise on K (Figure 1 small panel), with the RNA copy numbers data from single cell RNA-seq experiments. The models enable analytical or numerical solutions to the master equations, hence the likelihood function is available for parameter inference. The inferred parameters are then used to compare the two models in order to provide insight into the presence of extrinsic noise among the genes.</p></div>
+
+
+        </div>
+
+        <footer class="col-md-12">
+<hr>
+<p style="text-align: center;">
+<small>Ziqi Lu &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CID: 01043013 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supervisors: Rowan Brackston, John Pinney</small>
+
+</p>
+<p style="text-align: center;">
+<small>Imperial College London &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MSc Bioinformatics and Theoretical Systems Biology</small>
+</p>
+</p>
+<p style="text-align: center;">
+<small><strong>Notice: the words in blue can be interacted through clicking or hovering</strong></small>
+</p>
+
+
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../js/extra.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+
+        <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

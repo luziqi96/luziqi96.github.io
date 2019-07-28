@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+<title>Extrinsic Noise in Gene Expression</title>
+
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/purebasic.min.css">
+        <link href="../css/extra.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <!-- Expander button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="..">Extrinsic Noise</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li >
+                                <a href="..">Home</a>
+                            </li>
+                            <li >
+                                <a href="../Introduction/">Introduction</a>
+                            </li>
+                            <li >
+                                <a href="../Methods/">Methods</a>
+                            </li>
+                            <li class="active">
+                                <a href="./">MCMC</a>
+                            </li>
+                            <li >
+                                <a href="../ModelSele/">Model Selection</a>
+                            </li>
+                            <li >
+                                <a href="../Conclusion/">Discussion</a>
+                            </li>
+                            <li >
+                                <a href="../About/">About</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                            <li >
+                                <a rel="next" href="../Methods/">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li >
+                                <a rel="prev" href="../ModelSele/">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+  <!-- <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#mcmc">MCMC</a></li>
+    </ul>
+</div></div> -->
+  <div class="col-md-12" role="main">
+
+<h1 id="mcmc">MCMC</h1>
+<hr>
+
+<p>In the initial attempts of MCMC model fitting, the priors for all the parameters are kept flat so that the parameter space could be fully explored. However, a great number of samples (genes) exhibit unexpected behaviours with zero &lambda; and &nu; as well as hugely inflated &sigma; (Figure 2, All Flat). These may be caused by failure in numerical computation of the analytical solution for extreme parameter ranges, and are affecting the evaluation of MAPs. Thus it becomes reasonable to set priors for some parameters.</p>
+<hr>
+
+<div class="buttons">
+    <button class="button1 buttonactive" data-src="prior0">All Flat</button>
+    <button class="button1" data-src="prior1">&lambda; and &sigma;</button>
+    <button class="button1" data-src="prior2">K and &lambda; and &sigma;</button>
+</div>
+
+<p><br></p>
+<p><img id="Fig2" src="../figure/prior0.png"></p>
+<div class="legend">
+    Figure 2. Improvement of MCMC with defining priors to parameters for a random example with gene ENSMUSG00000000127. All Flat: all priors are flat, &lambda; and &sigma;: non-flat priors assigned for &lambda; and &sigma;, K and &lambda; and &sigma;: non-flat priors assigned for K and &lambda; and &sigma;. The four columns are outputs of the four parameters. The first row is the MCMC chain, with the progression on x axis and parameter value on y axis. The second row is the output of MCMC, the the blue line being the posterior distribution of the corresponding parameter, and the red line being the four-dimensional MAP calculated from the chain (see <a href="../Methods">Methods</a>). In the panel K and &lambda; and &sigma;, the mode for &sigma; at 0 means this compound model is equivalent to the telegraph model, hence the alternative peak is selected (see <a href="../Methods">Methods</a>).<strong> Click on the buttons to switch between MCMC runs with different priors</strong>
+</div>
+
+<hr>
+
+<p>It has been documented that in a telegraph model, the active transcription rate K and the switching on rate &lambda; is relatively constant, whereas the switching off rate &nu; can vary across scales depending on the mean mRNA number <a href="../About">(6)</a>. Since some parameters might be correlated, it is reasonable to start with trying priors for K or &lambda; and avoiding for &nu;. A first try with lognormal prior for &lambda; and truncated normal prior for &sigma; (Figure 3) does not fully eliminate the aberrant behaviour: &nu; still tends to zero while K starts to inflate (Figure 2, &lambda; and &sigma;). Eventually a lognormal prior for K is also required (Figure 3) to produce reasonable parameters (Figure 2, K and &lambda; and &sigma;). </p>
+<hr>
+
+<p><img id="Fig3" src="../figure/prior.png">
+<div class="legend">
+    Figure 3. Priors for the parameters used in the final MCMC. A flat prior is used for &nu;.
+</div></p>
+<hr>
+
+<p>Ideally with infinite length of time the MCMC chain should converge to the legitimate posterior distribution. However time is limited and the parameters can be trapped at small values since the variance for the proposal distribution (or step size) is proportional to the parameter value at the previous step. Therefore implementing a prior that relies on biological knowledge can potentially give rise to more reasonable parameter inference. The final choices of priors for K and &lambda; <a href="../About">(16)</a> and the flat &nu; <a href="../About">(6)</a> are all based on experimental and theoretical evidences, while the prior for &sigma; is arbitrarily decided to prevent its inflation. </p></div>
+
+
+        </div>
+
+        <footer class="col-md-12">
+<hr>
+<p style="text-align: center;">
+<small>Ziqi Lu &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CID: 01043013 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supervisors: Rowan Brackston, John Pinney</small>
+
+</p>
+<p style="text-align: center;">
+<small>Imperial College London &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MSc Bioinformatics and Theoretical Systems Biology</small>
+</p>
+</p>
+<p style="text-align: center;">
+<small><strong>Notice: the words in blue can be interacted through clicking or hovering</strong></small>
+</p>
+
+
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../js/extra.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+
+        <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="None">
+        
+        
+        <link rel="shortcut icon" href="img/favicon.ico">
+<title>Extrinsic Noise in Gene Expression</title>
+
+        <link href="css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+        <link href="css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/purebasic.min.css">
+        <link href="css/extra.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="js/jquery-1.10.2.min.js" defer></script>
+        <script src="js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    </head>
+
+    <body class="homepage">
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <!-- Expander button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href=".">Extrinsic Noise</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="active">
+                                <a href=".">Home</a>
+                            </li>
+                            <li >
+                                <a href="Introduction/">Introduction</a>
+                            </li>
+                            <li >
+                                <a href="Methods/">Methods</a>
+                            </li>
+                            <li >
+                                <a href="MCMC/">MCMC</a>
+                            </li>
+                            <li >
+                                <a href="ModelSele/">Model Selection</a>
+                            </li>
+                            <li >
+                                <a href="Conclusion/">Discussion</a>
+                            </li>
+                            <li >
+                                <a href="About/">About</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                            <li class="disabled">
+                                <a rel="next" >
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li >
+                                <a rel="prev" href="Introduction/">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+  <!-- <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#abstract">Abstract</a></li>
+        <li class="main "><a href="#lay-summary">Lay Summary</a></li>
+    </ul>
+</div></div> -->
+  <div class="col-md-12" role="main">
+
+<h1 style="text-align: center;">
+Extrinsic Noise in Gene Expression
+</h1>
+
+<h2 style="text-align: center;">Ziqi Lu &nbsp;&nbsp;&nbsp; CID: 01043013</h2>
+
+<h2 style="text-align: center;">Supervisors: Rowan Brackston, John Pinney</h2>
+
+<p><br></p>
+<h2 id="abstract">Abstract</h2>
+<hr>
+
+<p>Gene expression is intrinsically stochastic and the event of mRNA production has been found to occur in bursts. This bursty transcription is described by a telegraph model, but it is not sufficient to account for certain features in the mRNA copy number distribution such as the heavy-tailedness. A compound model that draws rate parameter in the telegraph model from a lognormal distribution incorporates extrinsic noise, and has been analytically proven to generate heavy-tailed distributions. In this project with the two mathematical models available, I use the MCMC method to infer parameters and fit the models to online single cell RNA-seq data, applying the Bayes factor derived method for model comparison. With these methods I manage to find a group of genes preferring extrinsic noise model, yet a best model may require mixing of the two.</p>
+<p><br>
+<br></p>
+<h2 id="lay-summary">Lay Summary</h2>
+<hr>
+
+<p>Understanding the machinery of transcription is essential for untangling the complicated network of gene regulation and downstream protein production. The process of transcription is inherently a noisy process. These noise mainly root from the transcription machinery, and contribute to cell-to-cell differences in the measured mRNA copy numbers. However, there is another source of noise called the extrinsic noise, which is brought by environmental factors external to the transcription machinery such as the number RNA polymerase present in a cell. With the mathematical models for transcription with and without extrinsic noise available, I am able to use statistical inference to study the existence of extrinsic noise using data from online resources, as well as investigate into the details of these model fitting. </p></div>
+
+
+        </div>
+
+        <footer class="col-md-12">
+<hr>
+<p style="text-align: center;">
+<small>Ziqi Lu &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CID: 01043013 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supervisors: Rowan Brackston, John Pinney</small>
+
+</p>
+<p style="text-align: center;">
+<small>Imperial College London &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MSc Bioinformatics and Theoretical Systems Biology</small>
+</p>
+</p>
+<p style="text-align: center;">
+<small><strong>Notice: the words in blue can be interacted through clicking or hovering</strong></small>
+</p>
+
+
+        </footer>
+        <script>
+            var base_url = ".",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="js/base.js" defer></script>
+        <script src="js/extra.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+
+        <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
+
+<!--
+MkDocs version : 1.0.4
+Build Date UTC : 2019-07-28 23:41:01
+-->

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+<title>Extrinsic Noise in Gene Expression</title>
+
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/purebasic.min.css">
+        <link href="../css/extra.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <!-- Expander button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="..">Extrinsic Noise</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li >
+                                <a href="..">Home</a>
+                            </li>
+                            <li >
+                                <a href="../Introduction/">Introduction</a>
+                            </li>
+                            <li >
+                                <a href="../Methods/">Methods</a>
+                            </li>
+                            <li >
+                                <a href="../MCMC/">MCMC</a>
+                            </li>
+                            <li >
+                                <a href="../ModelSele/">Model Selection</a>
+                            </li>
+                            <li >
+                                <a href="../Conclusion/">Discussion</a>
+                            </li>
+                            <li class="active">
+                                <a href="./">About</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                            <li >
+                                <a rel="next" href="../Conclusion/">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="disabled">
+                                <a rel="prev" >
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+  <!-- <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#references">References</a></li>
+        <li class="main "><a href="#acknowledgement">Acknowledgement</a></li>
+    </ul>
+</div></div> -->
+  <div class="col-md-12" role="main">
+
+<h1 id="references">References</h1>
+<hr>
+
+<ol>
+<li>Raj A, van Oudenaarden A. Nature, Nurture, or Chance: Stochastic Gene Expression and Its Consequences. Cell. 2008 Oct;135(2):216–26. </li>
+<li>Chubb JR, Liverpool TB. Bursts and pulses: insights from single cell studies into transcriptional mechanisms. Current Opinion in Genetics &amp; Development. 2010 Oct;20(5):478–84. </li>
+<li>Shahrezaei V, Swain PS. Analytical distributions for stochastic gene expression. Proceedings of the National Academy of Sciences. 2008 Nov 11;105(45):17256–61. </li>
+<li>Kumar N, Singh A, Kulkarni RV. Transcriptional Bursting in Gene Expression: Analytical Results for General Stochastic Models. Morozov AV, editor. PLOS Computational Biology. 2015 Oct 16;11(10):e1004292. </li>
+<li>Jones DL, Brewster RC, Phillips R. Promoter architecture dictates cell-to-cell variability in gene expression. Science. 2014 Dec 19;346(6216):1533–6. </li>
+<li>So L, Ghosh A, Zong C, Sepúlveda LA, Segev R, Golding I. General properties of transcriptional time series in Escherichia coli. Nature Genetics. 2011 Jun;43(6):554–60. </li>
+<li>Nacher JC, Ochiai T. Power-law distribution of gene expression fluctuations. Physics Letters A. 2008 Sep;372(40):6202–6. </li>
+<li>Ham L, Brackston RD, Stumpf MPH. Extrinsic noise and heavy-tailed laws in gene expression. bioRxiv [Internet]. 2019 [cited 2019 Jun 10]; Available from: <a href="http://biorxiv.org/lookup/doi/10.1101/623371">http://biorxiv.org/lookup/doi/10.1101/623371</a></li>
+<li>Kirk P, Thorne T, Stumpf MP. Model selection in systems and synthetic biology. Current Opinion in Biotechnology. 2013 Aug;24(4):767–74. </li>
+<li>Gelman A, Rubin DB. Markov chain Monte Carlo methods in biostatistics. Statistical Methods in Medical Research. 1996 Dec;5(4):339–55. </li>
+<li>Nestorowa S, Hamey FK, Pijuan Sala B, Diamanti E, Shepherd M, Laurenti E, et al. A single-cell resolution map of mouse hematopoietic stem and progenitor cell differentiation. Blood. 2016 Aug 25;128(8):e20–31. </li>
+<li>Ruffier M, Kähäri A, Komorowska M, Keenan S, Laird M, Longden I, et al. Ensembl core software resources: storage and programmatic access for DNA sequence and genome annotation. Database (Oxford). 2017 01;2017(1). </li>
+<li>Link WA, Eaton MJ. On thinning of chains in MCMC: Thinning of MCMC chains. Methods in Ecology and Evolution. 2012 Feb;3(1):112–5. </li>
+<li>Schöniger A, Wöhling T, Samaniego L, Nowak W. Model selection on solid ground: Rigorous comparison of nine ways to evaluate Bayesian model evidence. Water Resources Research. 2014 Dec;50(12):9484–513. </li>
+<li>Kass RE, Raftery AE. Bayes Factors. Journal of the American Statistical Association. 1995 Jun;90(430):773–95. </li>
+<li>Pai A, You L. Optimal tuning of bacterial sensing potential. Molecular Systems Biology [Internet]. 2009 Jul 7 [cited 2019 Jun 10];5. Available from: <a href="http://msb.embopress.org/cgi/doi/10.1038/msb.2009.43">http://msb.embopress.org/cgi/doi/10.1038/msb.2009.43</a></li>
+<li>Awazu A, Tanabe T, Kamitani M, Tezuka A, Nagano AJ. Broad distribution spectrum from Gaussian to power law appears in stochastic variations in RNA-seq data. Scientific Reports [Internet]. 2018 Dec [cited 2019 Jun 10];8(1). Available from: <a href="http://www.nature.com/articles/s41598-018-26735-4">http://www.nature.com/articles/s41598-018-26735-4</a></li>
+<li>Huang DW, Sherman BT, Lempicki RA. Bioinformatics enrichment tools: paths toward the comprehensive functional analysis of large gene lists. Nucleic Acids Research. 2009 Jan;37(1):1–13. </li>
+</ol>
+<p><br></p>
+<h1 id="acknowledgement">Acknowledgement</h1>
+<hr>
+
+<p>I would like to sincerely thank Dr. Rowan Brackston and Dr. John Pinney for their continuous supervision, their constructive advice during both project progression and website designing, and their patient help whenever I encounter problems.</p></div>
+
+
+        </div>
+
+        <footer class="col-md-12">
+<hr>
+<p style="text-align: center;">
+<small>Ziqi Lu &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CID: 01043013 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supervisors: Rowan Brackston, John Pinney</small>
+
+</p>
+<p style="text-align: center;">
+<small>Imperial College London &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MSc Bioinformatics and Theoretical Systems Biology</small>
+</p>
+</p>
+<p style="text-align: center;">
+<small><strong>Notice: the words in blue can be interacted through clicking or hovering</strong></small>
+</p>
+
+
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../js/extra.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+
+        <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

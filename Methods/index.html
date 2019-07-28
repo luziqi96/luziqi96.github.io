@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+<title>Extrinsic Noise in Gene Expression</title>
+
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/purebasic.min.css">
+        <link href="../css/extra.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <!-- Expander button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="..">Extrinsic Noise</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li >
+                                <a href="..">Home</a>
+                            </li>
+                            <li >
+                                <a href="../Introduction/">Introduction</a>
+                            </li>
+                            <li class="active">
+                                <a href="./">Methods</a>
+                            </li>
+                            <li >
+                                <a href="../MCMC/">MCMC</a>
+                            </li>
+                            <li >
+                                <a href="../ModelSele/">Model Selection</a>
+                            </li>
+                            <li >
+                                <a href="../Conclusion/">Discussion</a>
+                            </li>
+                            <li >
+                                <a href="../About/">About</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                            <li >
+                                <a rel="next" href="../Introduction/">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li >
+                                <a rel="prev" href="../MCMC/">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+  <!-- <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#methods">Methods</a></li>
+            <li><a href="#source-of-scrna-seq-data">Source of scRNA-seq Data</a></li>
+            <li><a href="#parameter-inference">Parameter Inference</a></li>
+            <li><a href="#model-selection">Model Selection</a></li>
+    </ul>
+</div></div> -->
+  <div class="col-md-12" role="main">
+
+<h1 id="methods">Methods</h1>
+<hr>
+
+<h2 id="source-of-scrna-seq-data">Source of scRNA-seq Data</h2>
+<p>The data for fitting the models are drawn from a scRNA-seq (single cell RNA-seq) experimental data <a href="../About">(11)</a> on <a href="https://www.ebi.ac.uk/gxa/sc/experiments/E-GEOD-81682/experiment-design">EBI Single Cell Expression Atlas</a>. This experiment contains scRNA-seq data for the 1920 mouse haematopoietic stem and progenitor cells on 20000 genes, out of which 852 cells labelled with the same <a href="https://en.wikipedia.org/wiki/Flow_cytometry" data-toggle="tooltip" title="fluorescence activated cell sorting">FACS</a> markers are selected for model fitting. Data are taken strictly from this same cell type in order to avoid the differential expression across cell types that could make mRNA distribution multi-modal.</p>
+<p>Out of the 20000 genes, the first 500 ordered by the Ensembl stable identifier are selected as different samples for fitting the models with the 852 data points due to the limit in computation speed. This choice of the first 500 genes can be regarded as random samples since they are auto-generated when annotated to a species for the first time <a href="../About">(12)</a>. As a measure of quality control, only genes with more than 200 out of 852 non-zero data points (mRNA number) are considered for modelling. Although this threshold may lead to a bias towards genes with higher expression, it can effectively remove the non-expressed genes and prevent too many zeros reducing the effective sample size.</p>
+<p><br></p>
+<h2 id="parameter-inference">Parameter Inference</h2>
+<p>The <a href="https://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm">Metropolis–Hastings</a> algorithm (an MCMC method) was used to infer the parameters. The telegraph model uses three parameters: the gene switching on rate &lambda;, the gene switching off rate &nu;, and the active gene transcription rate K (<a href="../Introduction">Figure 1</a>). The degradation rate &delta; is kept constant at 1 during the modelling since the analytical solution for this model requires the other parameters to be normalised by degradation rate instead of their actual values. The likelihood function is obtained by feeding the three parameters into the analytical solution for the master equations of the telegraph model. </p>
+<p>The compound model for extrinsic noise takes an additional parameter: the standard deviation of parameter K normalised by the mean of K, which is represented as &sigma; (<a href="../Introduction">Figure 1</a>). The compounding is achieved by drawing evenly spaced values of K from the lognormal distribution characterised by the mean of K (provided as parameter K) and its standard deviation (&sigma;K). Each K from the lognormal distribution is fed into the analytical solution for the telegraph model. The trapezium rule is used to integrate over all Ks to achieve the mixing and obtain the final compound distribution, which is then used for calculating the likelihood function.</p>
+<p>The MCMC chain is 100000 steps long with the first 10000 trimmed as the burning period. No thinning is implemented to make sufficient use of the generated data, and there are arguments that thinning does not increase precision of parameter estimate but rather serves to reduce computational time <a href="../About">(13)</a>. The proposal distribution for each step of the Markov Chain is a multivariate normal distribution centered on the parameters from the previous step and with standard deviation equal to 0.05 times the current value of the parameters in the chain.</p>
+<p><br></p>
+<h2 id="model-selection">Model Selection</h2>
+<p>When the posterior distributions for the parameters are obtained, the comparison between the two models becomes feasible. The Bayesian approaches usually prefer the Bayes factor as a criteria for model selection. The Bayes factor is the ratio between the two model evidences, which are the probabilities of the data dependent on each model. Direct calculation of model evidence is usually intractable due to the requirement for a multivariate integral, hence here the <a href="#" data-toggle="tooltip" title="Kashyap Information Criterion">KIC</a> is used as a direct approximation of the model evidence with the assumption of a peaked Gaussian posterior <a href="../About">(14)</a>:</p>
+<div>
+<div class="MathJax_Preview">\mathit{KIC_\hat{u}} = -2ln\mathcal{L}(M_k,\mathbf{\hat{u}_k}|\mathbf{y}) - 2ln\mathcal{p}(\mathbf{\hat{u}_k}|M_k) + N_pln\frac{N_s}{2\pi} + ln|\mathbf{\hat{F}}|</div>
+<script type="math/tex; mode=display">\mathit{KIC_\hat{u}} = -2ln\mathcal{L}(M_k,\mathbf{\hat{u}_k}|\mathbf{y}) - 2ln\mathcal{p}(\mathbf{\hat{u}_k}|M_k) + N_pln\frac{N_s}{2\pi} + ln|\mathbf{\hat{F}}|</script>
+</div>
+<p>In this equation of KIC for the model <span><span class="MathJax_Preview">M_k</span><script type="math/tex">M_k</script></span>, the first and second terms are the likelihood (calculated from data <span><span class="MathJax_Preview">\mathbf{y}</span><script type="math/tex">\mathbf{y}</script></span>) and prior evaluated at the <a href="https://en.wikipedia.org/wiki/Maximum_a_posteriori_estimation" data-toggle="tooltip" title="maximum a posteriori">MAP</a> estimate (<span><span class="MathJax_Preview">\hat{u}</span><script type="math/tex">\hat{u}</script></span>) from the posterior distribution, the third term is the penalty for parameter number (<span><span class="MathJax_Preview">N_p</span><script type="math/tex">N_p</script></span>) and sample size (<span><span class="MathJax_Preview">N_s</span><script type="math/tex">N_s</script></span>), and the last term is the determinant of Fisher information matrix (<span><span class="MathJax_Preview">\mathbf{\hat{F}}</span><script type="math/tex">\mathbf{\hat{F}}</script></span>). A difference in KIC of 10 signifies a very strong preference for the model with smaller KIC <a href="../About">(15)</a>.</p>
+<p>The MAP for the telegraph model is obtained by finding the peak in the three-dimensional <a href="https://en.wikipedia.org/wiki/Kernel_density_estimation" data-toggle="tooltip" title="Kernel Density Estimator">KDE</a>. The same method cannot be applied to the compound model since the computation time inflates with four-dimensional KDE. Moreover since the two models are nested with them being equivalent when the standard deviation of K becomes zero in compound model, the MCMC sometimes produces a bimodal fit for the compound model: one with zero and one with non-zero standard deviations. To prevent this redundancy, MAP is taken for marginalised posterior of &sigma; that is greater than 0.1, and a small window of ±0.05 around this marginalised MAP is scanned for four-dimensional MAP for all the parameters. </p></div>
+
+
+        </div>
+
+        <footer class="col-md-12">
+<hr>
+<p style="text-align: center;">
+<small>Ziqi Lu &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CID: 01043013 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supervisors: Rowan Brackston, John Pinney</small>
+
+</p>
+<p style="text-align: center;">
+<small>Imperial College London &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MSc Bioinformatics and Theoretical Systems Biology</small>
+</p>
+</p>
+<p style="text-align: center;">
+<small><strong>Notice: the words in blue can be interacted through clicking or hovering</strong></small>
+</p>
+
+
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../js/extra.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+
+        <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
